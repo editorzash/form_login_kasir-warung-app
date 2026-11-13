@@ -3,852 +3,1355 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login & Autentikasi — KASIR WARUNG</title>
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <meta name="theme-color" content="#0f766e">
+  <title>Masuk Shift | Kasir Warung</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Font Awesome 6 -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
     :root {
-      --primary: #0F766E;
-      --primary-hover: #115E59;
-      --primary-light: #F0FDFA;
-      --primary-border: #99F6E4;
-      --primary-glow: rgba(15, 118, 110, 0.25);
-      --bg-page: #F5F5F4;
-      --bg-card: #FFFFFF;
-      --bg-subtle: #F0FDFA;
-      --border: #E7E5E4;
-      --text: #1C1917;
-      --muted: #78716C;
-      --input-bg: #FFFFFF;
-      --shadow-card: 0 20px 40px -15px rgba(15, 118, 110, 0.15);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --radius-xl: 24px;
+      color-scheme: light dark;
+      --teal-800: #115e59;
+      --teal-700: #0f766e;
+      --teal-600: #0d9488;
+      --teal-100: #ccfbf1;
+      --teal-50: #f0fdfa;
+      --amber-600: #d97706;
+      --emerald-600: #059669;
+      --red-600: #c81e1e;
+      --red-bg: #fef2f2;
+      --green-600: #15803d;
+
+      --canvas: #f4f3ef;
+      --surface: #ffffff;
+      --surface-alt: #f9f8f5;
+      --ink: #1c1917;
+      --ink-muted: #57534e;
+      --border: #d6d3d1;
+      --border-strong: #78716c;
+      --focus-ring: #0f766e;
+      --shadow-card: 0 18px 42px -18px rgba(17, 94, 89, 0.18), 0 2px 6px rgba(28, 25, 23, 0.05);
+      --autofill-bg: #f0fdfa;
+      --autofill-ring: #0f766e;
+      --dot-grid: rgba(15, 118, 110, 0.08);
     }
 
-    * {
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --canvas: #141413;
+        --surface: #1e1e1c;
+        --surface-alt: #272724;
+        --ink: #fafaf9;
+        --ink-muted: #c7c3be;
+        --border: #3f3f3a;
+        --border-strong: #85827d;
+        --teal-50: #082f2c;
+        --teal-100: #114440;
+        --focus-ring: #2dd4bf;
+        --red-600: #f87171;
+        --red-bg: #3b1717;
+        --green-600: #4ade80;
+        --shadow-card: 0 22px 48px -16px rgba(0, 0, 0, 0.55);
+        --autofill-bg: #0f3532;
+        --autofill-ring: #2dd4bf;
+        --dot-grid: rgba(45, 212, 191, 0.08);
+      }
+    }
+
+    *, *::before, *::after {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    html {
+      font-size: 16px;
     }
 
     body {
-      background-color: var(--bg-page);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Ambient Glows */
-    .ambient-glow {
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--primary-glow) 0%, rgba(0,0,0,0) 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .glow-1 { top: -100px; left: -100px; }
-    .glow-2 { bottom: -120px; right: -120px; }
-
-    /* Main Container */
-    .login-wrapper {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 1080px;
-      min-height: 620px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-card);
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      overflow: hidden;
-      animation: fadeIn 0.4s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(14px) scale(0.99); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* LEFT HERO PANEL */
-    .hero-panel {
-      background: linear-gradient(135deg, #134E4A 0%, #115E59 50%, #0F766E 100%);
-      color: #FFFFFF;
-      padding: 44px 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .hero-top {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: #FFFFFF;
-      margin-bottom: 28px;
-    }
-
-    .hero-logo-box {
-      width: 44px;
-      height: 44px;
-      background: #FFFFFF;
-      color: var(--primary);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .hero-brand-name {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      display: block;
-      line-height: 1.1;
-    }
-
-    .hero-brand-tag {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 600;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 99px;
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .hero-title {
-      font-size: 27px;
-      font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-
-    .hero-desc {
-      font-size: 14px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.85);
-      margin-bottom: 28px;
-    }
-
-    .hero-features {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 30px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-feature-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13.5px;
-      color: rgba(255,255,255,0.9);
-      font-weight: 500;
-    }
-
-    .h-icon-box {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: #FFFFFF;
-      flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .live-status-card {
-      position: relative;
-      z-index: 2;
-      background: rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-      font-weight: 600;
-    }
-
-    .pulse-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #10B981;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    /* RIGHT FORM PANEL */
-    .form-panel {
-      padding: 40px 36px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: var(--bg-card);
-    }
-
-    .form-title {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.5px;
-      margin-bottom: 4px;
-    }
-
-    .form-subtitle {
-      font-size: 13px;
-      color: var(--muted);
+      margin: 0;
+      min-height: 100dvh;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       line-height: 1.5;
-    }
-
-    .demo-roles-section {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 10px 12px;
-      margin: 18px 0;
-    }
-
-    .demo-roles-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      color: var(--ink);
+      background-color: var(--canvas);
+      background-image:
+        radial-gradient(ellipse 80% 45% at 50% 0%, rgba(15, 118, 110, 0.14), transparent 70%),
+        radial-gradient(var(--dot-grid) 1px, transparent 1px);
+      background-size: 100% 100%, 20px 20px;
       display: flex;
+      flex-direction: column;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+    }
+
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    /* TOP BAR — Selalu tampil di desktop & mobile */
+    .topbar {
+      width: 100%;
+      padding: 0.75rem clamp(1rem, 4vw, 2rem);
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+      background: color-mix(in srgb, var(--surface) 84%, transparent);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-inner {
+      max-width: 60rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
-    .demo-roles-pills {
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      border-radius: 0.65rem;
+      padding: 0.15rem 0.25rem;
+    }
+
+    .brand-mark {
+      inline-size: 2.25rem;
+      block-size: 2.25rem;
+      border-radius: 0.65rem;
+      background: var(--teal-700);
+      color: #ffffff;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
+      place-items: center;
+      font-size: 1rem;
+      flex-shrink: 0;
     }
 
-    .role-pill {
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text);
-      border-radius: 8px;
-      padding: 7px 6px;
-      font-size: 11.5px;
+    .brand-sub {
+      display: block;
+      font-size: 0.72rem;
       font-weight: 600;
-      cursor: pointer;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .topbar-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      background: var(--teal-50);
+      color: var(--teal-700);
+      border: 1px solid color-mix(in srgb, var(--teal-700) 25%, transparent);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .status-pill {
+        color: #5eead4;
+      }
+    }
+
+    .status-dot {
+      inline-size: 0.45rem;
+      block-size: 0.45rem;
+      border-radius: 50%;
+      background: var(--emerald-600);
+      flex-shrink: 0;
+    }
+
+    /* MAIN SINGLE-FOCUS STAGE */
+    .stage {
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 3px;
-      transition: all 0.2s;
-    }
-
-    .role-pill.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #FFFFFF;
-      box-shadow: 0 3px 8px var(--primary-glow);
-    }
-
-    .login-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 18px;
-      gap: 16px;
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 8px 4px 12px 4px;
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.2s;
-    }
-
-    .tab-btn.active {
-      color: var(--primary);
-    }
-
-    .tab-btn.active::after {
-      content: "";
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 2.5px;
-      background: var(--primary);
-      border-radius: 99px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-wrapper i.field-icon {
-      position: absolute;
-      left: 14px;
-      font-size: 14px;
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      height: 44px;
-      background: var(--input-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0 14px 0 40px;
-      font-size: 13.5px;
-      color: var(--text);
-      outline: none;
-      transition: all 0.2s;
-    }
-
-    .form-input:focus, .form-select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-glow);
-    }
-
-    .btn-toggle-pass {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 14px;
-      padding: 4px;
-    }
-
-    /* PIN KEYPAD */
-    .pin-dots-container {
-      display: flex;
       justify-content: center;
-      gap: 12px;
-      margin: 12px 0 16px 0;
+      padding: clamp(0.85rem, 3vw, 1.75rem) 1rem;
+      gap: 0.9rem;
     }
 
-    .pin-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--border);
-      transition: all 0.2s;
-    }
-
-    .pin-dot.filled {
-      background: var(--primary);
-      transform: scale(1.15);
-      box-shadow: 0 0 8px var(--primary-glow);
-    }
-
-    .keypad-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      max-width: 280px;
-      margin: 0 auto;
-    }
-
-    .keypad-btn {
-      height: 46px;
-      border-radius: 10px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 16px;
+    /* TOP STATUS TOAST — Posisi di pita atas agar tidak pernah menutupi field input */
+    .toast-banner {
+      position: fixed;
+      top: 0.65rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-10px);
+      z-index: 60;
+      background: var(--ink);
+      color: var(--surface);
+      padding: 0.5rem 0.95rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
       font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-    }
-
-    .keypad-btn:active {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    .form-options {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: 12.5px;
-    }
-
-    .btn-submit {
-      width: 100%;
-      height: 48px;
-      background: var(--primary);
-      color: #FFFFFF;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-size: 14.5px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px var(--primary-glow);
-      transition: all 0.2s ease;
-    }
-
-    .btn-submit:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
-    }
-
-    .btn-bypass {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 99px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      transition: all 0.2s;
+      justify-content: center;
+      gap: 0.45rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      max-width: calc(100vw - 1.5rem);
     }
 
-    .form-footer-info {
-      margin-top: 24px;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
+    .toast-banner.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* MAIN AUTH CARD */
+    .auth-card {
+      width: 100%;
+      max-width: 28rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.35rem;
+      padding: clamp(1.15rem, 3.5vw, 1.85rem);
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-head {
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.55rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      text-wrap: balance;
+    }
+
+    .card-desc {
+      margin: 0.25rem 0 0;
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      text-wrap: pretty;
+    }
+
+    /* QUICK STAFF CHIPS — Ringkas, tanpa kotak berlapis */
+    .shift-section {
+      margin-bottom: 1rem;
+    }
+
+    .section-eyebrow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11.5px;
-      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+      margin-bottom: 0.45rem;
     }
 
-    .toast-container {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 9999;
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+
+    .staff-chip {
+      appearance: none;
+      font: inherit;
+      background: var(--surface-alt);
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.5rem 0.4rem;
+      min-block-size: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-align: left;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .staff-chip:hover {
+      border-color: var(--teal-700);
+    }
+
+    .staff-chip[aria-pressed="true"] {
+      background: var(--teal-50);
+      border-color: var(--teal-700);
+      box-shadow: inset 0 0 0 1px var(--teal-700);
+    }
+
+    .staff-avatar {
+      inline-size: 1.85rem;
+      block-size: 1.85rem;
+      border-radius: 0.55rem;
+      display: grid;
+      place-items: center;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .av-owner { background: #0f766e; }
+    .av-lead { background: #b45309; }
+    .av-cashier { background: #047857; }
+
+    .staff-meta {
+      min-width: 0;
+    }
+
+    .staff-name {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .staff-role {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      line-height: 1.2;
+    }
+
+    @media (max-width: 360px) {
+      .staff-grid {
+        grid-template-columns: 1fr;
+      }
+      .staff-chip {
+        padding: 0.45rem 0.65rem;
+      }
+    }
+
+    /* SEGMENTED MODE SWITCH */
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.25rem;
+      padding: 0.25rem;
+      border-radius: 0.75rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .mode-tab {
+      appearance: none;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink-muted);
+      background: transparent;
+      border: none;
+      border-radius: 0.55rem;
+      min-block-size: 40px;
+      padding: 0.45rem 0.6rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .mode-tab[aria-selected="true"] {
+      background: var(--surface);
+      color: var(--teal-700);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .mode-tab[aria-selected="true"] {
+        color: #5eead4;
+      }
+    }
+
+    /* FORM FIELDS — Jarak Gestalt rapi & kontras jelas */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-block-end: 0.9rem;
+    }
+
+    .field-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .control-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .control-icon {
+      position: absolute;
+      inset-inline-start: 0.85rem;
+      color: var(--ink-muted);
+      font-size: 0.9rem;
       pointer-events: none;
     }
 
-    .toast {
-      background: #1C1917;
-      color: #FFFFFF;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 13.5px;
+    .select-chevron {
+      position: absolute;
+      inset-inline-end: 0.9rem;
+      color: var(--ink-muted);
+      font-size: 0.8rem;
+      pointer-events: none;
+    }
+
+    .form-control {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      line-height: 1.4;
+      color: var(--ink);
+      background: var(--surface);
+      border: 1.5px solid var(--border-strong);
+      border-radius: 0.65rem;
+      inline-size: 100%;
+      min-block-size: 48px;
+      padding-block: 0.6rem;
+      padding-inline-start: 2.5rem;
+      padding-inline-end: 0.85rem;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    select.form-control {
+      appearance: none;
+      padding-inline-end: 2.4rem;
+      cursor: pointer;
+    }
+
+    .form-control.has-trailing-btn {
+      padding-inline-end: 3.1rem;
+    }
+
+    .btn-eye {
+      appearance: none;
+      position: absolute;
+      inset-inline-end: 0.25rem;
+      min-inline-size: 40px;
+      min-block-size: 40px;
+      border: none;
+      border-radius: 0.5rem;
+      background: transparent;
+      color: var(--ink-muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 0.95rem;
+    }
+
+    .btn-eye:hover {
+      color: var(--ink);
+      background: var(--surface-alt);
+    }
+
+    /* Validation after interaction only (:user-invalid + fallback) */
+    .form-control:is(:user-invalid, .user-invalid-fallback) {
+      border-color: var(--red-600);
+      background-color: var(--red-bg);
+    }
+
+    .form-control:is(:user-valid, .user-valid-fallback) {
+      border-color: var(--green-600);
+    }
+
+    /* Custom Autofill highlight (non-color indicator + preserve text contrast) */
+    .form-control:is(:autofill, :-webkit-autofill) {
+      box-shadow:
+        inset 0 0 0 2px var(--autofill-ring),
+        inset 0 0 0 100vmax var(--autofill-bg);
+      -webkit-text-fill-color: var(--ink);
+      caret-color: var(--ink);
+    }
+
+    .error-msg {
+      display: none;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
       font-weight: 600;
+      color: var(--red-600);
+    }
+
+    .control-box:has(.form-control:is(:user-invalid, .user-invalid-fallback)) + .error-msg {
+      display: flex;
+    }
+
+    /* PIN QUICK MODE — Satu input numeric + indikator visual + mini keypad ringkas */
+    .pin-input-mono {
+      text-align: center;
+      padding-inline: 2.75rem;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.45em;
+    }
+
+    .pin-meter {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.4rem;
+      margin-block: 0.25rem 0.5rem;
+    }
+
+    .pin-pip {
+      block-size: 0.32rem;
+      border-radius: 999px;
+      background: var(--border);
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .pin-pip.active {
+      background: var(--teal-700);
+      transform: scaleY(1.25);
+    }
+
+    .mini-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.38rem;
+    }
+
+    .key-btn {
+      appearance: none;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      min-block-size: 40px;
+      border-radius: 0.6rem;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--ink);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background-color 0.12s ease, transform 0.08s ease;
+    }
+
+    .key-btn:hover {
+      border-color: var(--teal-700);
+    }
+
+    .key-btn:active {
+      background: var(--teal-700);
+      color: #ffffff;
+      transform: scale(0.97);
+    }
+
+    .key-btn-clear {
+      color: var(--red-600);
+    }
+
+    /* OPTIONS ROW & CTA */
+    .form-meta-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s ease;
-      border-left: 4px solid var(--primary);
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-block: 0.2rem 1rem;
+      font-size: 0.82rem;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
+    .check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      color: var(--ink-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      min-block-size: 32px;
     }
 
-    @media (max-width: 900px) {
-      .login-wrapper {
-        grid-template-columns: 1fr;
-        max-width: 480px;
+    .check-input {
+      inline-size: 1.1rem;
+      block-size: 1.1rem;
+      accent-color: var(--teal-700);
+      cursor: pointer;
+    }
+
+    .link-btn {
+      appearance: none;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--teal-700);
+      background: none;
+      border: none;
+      padding: 0.25rem 0.35rem;
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      border-radius: 0.35rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .link-btn {
+        color: #5eead4;
       }
-      .hero-panel { display: none; }
-      .form-panel { padding: 32px 24px; }
+    }
+
+    .btn-primary {
+      appearance: none;
+      font: inherit;
+      inline-size: 100%;
+      min-block-size: 50px;
+      padding: 0.7rem 1.25rem;
+      border: none;
+      border-radius: 0.75rem;
+      background: var(--teal-700);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--teal-800);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.75;
+      cursor: wait;
+    }
+
+    /* FOOTER OUTBOUND LINK */
+    .stage-footer {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    .bypass-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-decoration: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .bypass-link:hover {
+      border-color: var(--teal-700);
+    }
+
+    /* NATIVE DIALOG FOR DEMO HELP */
+    dialog.help-dialog {
+      margin: auto;
+      max-width: 24rem;
+      width: calc(100% - 2rem);
+      border: 1px solid var(--border);
+      border-radius: 1.15rem;
+      padding: 1.35rem;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-card);
+    }
+
+    dialog.help-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(3px);
+    }
+
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .dialog-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .dialog-close {
+      appearance: none;
+      min-inline-size: 36px;
+      min-block-size: 36px;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .demo-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-bottom: 1rem;
+    }
+
+    .demo-table th, .demo-table td {
+      text-align: left;
+      padding: 0.45rem 0.35rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .demo-table th {
+      color: var(--ink-muted);
+      font-weight: 700;
+    }
+
+    /* ACCESSIBLE FOCUS & COARSE POINTERS */
+    :where(a, button, input, select):focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    @media (pointer: coarse) {
+      .form-control {
+        min-block-size: 52px;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .auth-card, .staff-chip, .mode-switch, .form-control, .key-btn, .bypass-link {
+        border: 1px solid ButtonText;
+      }
+      .staff-chip[aria-pressed="true"], .mode-tab[aria-selected="true"] {
+        outline: 2px solid Highlight;
+      }
+      .btn-primary {
+        border: 2px solid ButtonText;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="ambient-glow glow-1"></div>
-  <div class="ambient-glow glow-2"></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="../kasir-warung-app/index.html" class="brand-link" id="brandHomeLink">
+        <span class="brand-mark" aria-hidden="true">
+          <i class="fa-solid fa-cash-register"></i>
+        </span>
+        <span>
+          Kasir Warung
+          <span class="brand-sub">Portal Shift &amp; Kasir UMKM</span>
+        </span>
+      </a>
 
-  <div class="login-wrapper">
-
-    <!-- LEFT PANEL: Hero -->
-    <div class="hero-panel">
-      <div class="hero-top">
-        <a href="../kasir-warung-app/index.html" class="hero-brand" title="Buka Langsung">
-          <div class="hero-logo-box"><i class="fa-solid fa-cash-register"></i></div>
-          <div>
-            <span class="hero-brand-name">KASIR WARUNG</span>
-            <span class="hero-brand-tag">Kedai & Warung POS</span>
-          </div>
-        </a>
-
-        <div class="hero-badge">
-          <i class="fa-solid fa-store"></i>
-          <span>SISTEM KASIR KHUSUS WARUNG & KEDAI</span>
-        </div>
-
-        <h1 class="hero-title">Kasir Ringan, Cepat & Tanpa Ribet</h1>
-        <p class="hero-desc">Pencatatan nota antrean, tanda ciri pelanggan, dan rekap omzet harian otomatis tersimpan aman di HP tanpa perlu internet.</p>
-
-        <div class="hero-features">
-          <div class="hero-feature-item">
-            <div class="h-icon-box"><i class="fa-solid fa-list-check"></i></div>
-            <span>Antrean multi-nota terbuka untuk pelanggan makan di tempat</span>
-          </div>
-          <div class="hero-feature-item">
-            <div class="h-icon-box"><i class="fa-solid fa-palette"></i></div>
-            <span>Penanda ciri warna baju/meja pelanggan tanpa perlu tanya nama</span>
-          </div>
-          <div class="hero-feature-item">
-            <div class="h-icon-box"><i class="fa-solid fa-calculator"></i></div>
-            <span>Hitung kembalian cepat dengan tombol uang tunai instan</span>
-          </div>
-          <div class="hero-feature-item">
-            <div class="h-icon-box"><i class="fa-solid fa-file-arrow-down"></i></div>
-            <span>Rekap harian & ekspor cadangan data JSON kapan saja</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="live-status-card">
-        <div class="status-indicator">
-          <div class="pulse-dot"></div>
-          <span>Mode Offline-First Siap Dipakai</span>
-        </div>
-        <span style="font-size:11.5px; opacity:0.8;">PWA v1.0</span>
+      <div class="topbar-meta">
+        <span class="status-pill">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Siap Luring</span>
+        </span>
+        <time class="mono" id="liveClock" aria-label="Jam saat ini">--:-- WIB</time>
       </div>
     </div>
+  </header>
 
-    <!-- RIGHT PANEL: Form -->
-    <div class="form-panel">
-      <div>
-        <div style="margin-bottom:14px;">
-          <h2 class="form-title">Masuk Kasir Warung</h2>
-          <p class="form-subtitle">Pilih akun demonstrasi atau masukkan sandi kasir jaga.</p>
+  <div id="toastBanner" class="toast-banner" role="status" aria-live="polite"></div>
+
+  <main class="stage">
+    <section class="auth-card" aria-labelledby="loginHeading">
+      <div class="card-head">
+        <h1 class="card-title" id="loginHeading">Buka Shift Kasir</h1>
+        <p class="card-desc">Pilih petugas jaga atau masuk dengan email dan PIN kasir.</p>
+      </div>
+
+      <!-- Staff Quick Switcher -->
+      <div class="shift-section">
+        <div class="section-eyebrow">
+          <span>Petugas Cepat (Demo 1-Klik)</span>
+          <span class="mono" id="selectedRoleTag">Pemilik</span>
         </div>
-
-        <!-- Quick Demo Accounts -->
-        <div class="demo-roles-section">
-          <div class="demo-roles-label">
-            <span>Akun Demonstrasi</span>
-            <span style="color:var(--primary); font-size:10px;">Klik 1x untuk Isi</span>
-          </div>
-          <div class="demo-roles-pills">
-            <button type="button" class="role-pill active" id="pillOwner" onclick="setAccount('owner')">
-              <i class="fa-solid fa-crown" style="color:#F59E0B;"></i>
-              <span>Pemilik</span>
-            </button>
-            <button type="button" class="role-pill" id="pillLead" onclick="setAccount('lead')">
-              <i class="fa-solid fa-user-tie" style="color:#3B82F6;"></i>
-              <span>Pengelola</span>
-            </button>
-            <button type="button" class="role-pill" id="pillCashier" onclick="setAccount('cashier')">
-              <i class="fa-solid fa-cash-register" style="color:#10B981;"></i>
-              <span>Kasir Jaga</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mode Tabs -->
-        <div class="login-tabs">
-          <button type="button" class="tab-btn active" id="tabEmail" onclick="switchTab('email')">
-            <i class="fa-solid fa-envelope"></i> Email / Akun
+        <div class="staff-grid" role="group" aria-label="Pilih akun petugas demonstrasi">
+          <button type="button" class="staff-chip" id="chipOwner" data-role="owner" aria-pressed="true">
+            <span class="staff-avatar av-owner" aria-hidden="true">PW</span>
+            <span class="staff-meta">
+              <span class="staff-name">Pak Warung</span>
+              <span class="staff-role">Pemilik</span>
+            </span>
           </button>
-          <button type="button" class="tab-btn" id="tabPin" onclick="switchTab('pin')">
-            <i class="fa-solid fa-key"></i> PIN Cepat
+          <button type="button" class="staff-chip" id="chipLead" data-role="lead" aria-pressed="false">
+            <span class="staff-avatar av-lead" aria-hidden="true">MS</span>
+            <span class="staff-meta">
+              <span class="staff-name">Mbak Sri</span>
+              <span class="staff-role">Pengelola</span>
+            </span>
           </button>
-        </div>
-
-        <!-- Form -->
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label class="form-label">Pilih Cabang Warung</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-store field-icon"></i>
-              <select class="form-select" id="outletSelect">
-                <option value="Warung Utama (Pusat)">Warung Utama (Pusat)</option>
-                <option value="Cabang Pasar Tradisional">Cabang Pasar Tradisional</option>
-                <option value="Gerai Depan Kampus">Gerai Depan Kampus</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Section Email -->
-          <div id="sectionEmail">
-            <div class="form-group">
-              <label class="form-label">Email / Pengguna</label>
-              <div class="input-wrapper">
-                <i class="fa-solid fa-envelope field-icon"></i>
-                <input type="text" class="form-input" id="inputEmail" value="pemilik@warung.id" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Kata Sandi</label>
-              <div class="input-wrapper">
-                <i class="fa-solid fa-lock field-icon"></i>
-                <input type="password" class="form-input" id="inputPass" value="••••••••" required>
-                <button type="button" class="btn-toggle-pass" onclick="togglePass()">
-                  <i class="fa-regular fa-eye" id="eyeIcon"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Section PIN -->
-          <div id="sectionPin" style="display:none; text-align:center;">
-            <label class="form-label">Masukkan 6 Digit PIN Kasir</label>
-            <div class="pin-dots-container" id="pinDots">
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-              <div class="pin-dot"></div>
-            </div>
-            <div class="keypad-grid">
-              <button type="button" class="keypad-btn" onclick="pressKey('1')">1</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('2')">2</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('3')">3</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('4')">4</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('5')">5</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('6')">6</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('7')">7</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('8')">8</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('9')">9</button>
-              <button type="button" class="keypad-btn" style="color:#EF4444;" onclick="pressKey('clear')"><i class="fa-solid fa-trash-can"></i></button>
-              <button type="button" class="keypad-btn" onclick="pressKey('0')">0</button>
-              <button type="button" class="keypad-btn" onclick="pressKey('back')"><i class="fa-solid fa-delete-left"></i></button>
-            </div>
-          </div>
-
-          <div class="form-options" id="rowOptions" style="margin-top:12px;">
-            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--muted);">
-              <input type="checkbox" checked style="accent-color:var(--primary);">
-              <span>Ingat sesi di HP ini</span>
-            </label>
-            <a href="javascript:alert('Gunakan PIN: 888888 untuk Pemilik atau 123456 untuk Kasir')" style="color:var(--primary); font-weight:700; text-decoration:none;">Bantuan PIN</a>
-          </div>
-
-          <button type="submit" class="btn-submit" id="btnSubmit">
-            <span>Buka Aplikasi Kasir</span>
-            <i class="fa-solid fa-arrow-right"></i>
+          <button type="button" class="staff-chip" id="chipCashier" data-role="cashier" aria-pressed="false">
+            <span class="staff-avatar av-cashier" aria-hidden="true">BD</span>
+            <span class="staff-meta">
+              <span class="staff-name">Budi</span>
+              <span class="staff-role">Kasir</span>
+            </span>
           </button>
-        </form>
-
-        <div style="text-align:center; margin-top:14px;">
-          <a href="../kasir-warung-app/index.html" class="btn-bypass">
-            <span>Langsung Buka Kasir Warung</span>
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
         </div>
       </div>
 
-      <div class="form-footer-info">
-        <span>🔒 Penyimpanan Lokal Aman</span>
-        <span>&copy; 2026 Kasir Warung</span>
+      <!-- Segmented Tab Switch -->
+      <div class="mode-switch" role="tablist" aria-label="Metode masuk kasir">
+        <button type="button" role="tab" class="mode-tab" id="tabPassword" aria-selected="true" aria-controls="panelPassword">
+          <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+          <span>Akun &amp; Sandi</span>
+        </button>
+        <button type="button" role="tab" class="mode-tab" id="tabPin" aria-selected="false" aria-controls="panelPin">
+          <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
+          <span>PIN 6-Digit</span>
+        </button>
       </div>
+
+      <form id="loginForm" method="post" action="../kasir-warung-app/index.html" aria-labelledby="loginHeading">
+        <div class="field">
+          <label class="field-label" for="outletSelect">Lokasi Warung</label>
+          <div class="control-box">
+            <i class="fa-solid fa-store control-icon" aria-hidden="true"></i>
+            <select class="form-control" id="outletSelect" name="outlet">
+              <option value="Warung Utama (Pusat)">Warung Utama (Pusat)</option>
+              <option value="Cabang Pasar Tradisional">Cabang Pasar Tradisional</option>
+              <option value="Gerai Depan Kampus">Gerai Depan Kampus</option>
+            </select>
+            <i class="fa-solid fa-chevron-down select-chevron" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <!-- Panel 1: Email & Password -->
+        <div id="panelPassword" role="tabpanel" aria-labelledby="tabPassword">
+          <div class="field">
+            <label class="field-label" for="inputEmail">Email Petugas</label>
+            <div class="control-box">
+              <i class="fa-regular fa-envelope control-icon" aria-hidden="true"></i>
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail"
+                name="email"
+                value="pemilik@warung.id"
+                placeholder="nama@warung.id"
+                autocomplete="username"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                enterkeyhint="next"
+                data-error="emailError"
+                required>
+            </div>
+            <div id="emailError" class="error-msg">
+              <span role="img" aria-label="Error">⚠</span>
+              <span>Masukkan email yang valid, contoh: pemilik@warung.id.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="inputPassword">Kata Sandi</label>
+            <span id="passHint" class="field-hint">Minimal 6 karakter. Klik ikon mata untuk memeriksa isi sandi.</span>
+            <div class="control-box">
+              <i class="fa-solid fa-lock control-icon" aria-hidden="true"></i>
+              <input
+                type="password"
+                class="form-control has-trailing-btn"
+                id="inputPassword"
+                name="password"
+                value="warung2026"
+                placeholder="Masukkan kata sandi"
+                minlength="6"
+                autocomplete="current-password"
+                enterkeyhint="done"
+                aria-describedby="passHint"
+                data-error="passError"
+                required>
+              <button
+                type="button"
+                class="btn-eye"
+                id="togglePassBtn"
+                aria-pressed="false"
+                aria-label="Tampilkan kata sandi"
+                aria-controls="inputPassword">
+                <i class="fa-regular fa-eye" id="eyeIcon" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div id="passError" class="error-msg">
+              <span role="img" aria-label="Error">⚠</span>
+              <span>Kata sandi wajib diisi minimal 6 karakter.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Single-input PIN + Compact Touch Pad -->
+        <div id="panelPin" role="tabpanel" aria-labelledby="tabPin" hidden>
+          <div class="field">
+            <label class="field-label" for="inputPin">PIN Shift Kasir (6 Angka)</label>
+            <span id="pinHint" class="field-hint">Ketik lewat keyboard atau tombol angka di bawah.</span>
+            <div class="control-box">
+              <i class="fa-solid fa-key control-icon" aria-hidden="true"></i>
+              <input
+                type="password"
+                class="form-control has-trailing-btn pin-input-mono"
+                id="inputPin"
+                name="pin"
+                value="888888"
+                inputmode="numeric"
+                pattern="\d{6}"
+                maxlength="6"
+                autocomplete="one-time-code"
+                enterkeyhint="done"
+                aria-describedby="pinHint"
+                data-error="pinError"
+                disabled
+                required>
+              <button
+                type="button"
+                class="btn-eye"
+                id="togglePinBtn"
+                aria-pressed="false"
+                aria-label="Tampilkan angka PIN"
+                aria-controls="inputPin">
+                <i class="fa-regular fa-eye" id="pinEyeIcon" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div id="pinError" class="error-msg">
+              <span role="img" aria-label="Error">⚠</span>
+              <span>PIN harus berisi tepat 6 angka (0–9).</span>
+            </div>
+
+            <div class="pin-meter" id="pinMeter" aria-hidden="true">
+              <span class="pin-pip active"></span>
+              <span class="pin-pip active"></span>
+              <span class="pin-pip active"></span>
+              <span class="pin-pip active"></span>
+              <span class="pin-pip active"></span>
+              <span class="pin-pip active"></span>
+            </div>
+
+            <div class="mini-keypad" role="group" aria-label="Tombol angka PIN">
+              <button type="button" class="key-btn" data-key="1">1</button>
+              <button type="button" class="key-btn" data-key="2">2</button>
+              <button type="button" class="key-btn" data-key="3">3</button>
+              <button type="button" class="key-btn" data-key="4">4</button>
+              <button type="button" class="key-btn" data-key="5">5</button>
+              <button type="button" class="key-btn" data-key="6">6</button>
+              <button type="button" class="key-btn" data-key="7">7</button>
+              <button type="button" class="key-btn" data-key="8">8</button>
+              <button type="button" class="key-btn" data-key="9">9</button>
+              <button type="button" class="key-btn key-btn-clear" data-key="clear" aria-label="Kosongkan PIN">
+                <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="key-btn" data-key="0">0</button>
+              <button type="button" class="key-btn" data-key="back" aria-label="Hapus satu angka">
+                <i class="fa-solid fa-delete-left" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-meta-row">
+          <label class="check-label" for="rememberSession">
+            <input type="checkbox" class="check-input" id="rememberSession" name="remember" checked>
+            <span>Ingat sesi kasir</span>
+          </label>
+          <button type="button" class="link-btn" id="openHelpBtn">Info PIN Demo</button>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span>Buka Aplikasi Kasir</span>
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </form>
+    </section>
+
+    <footer class="stage-footer">
+      <a href="../kasir-warung-app/index.html" class="bypass-link" id="bypassLink">
+        <span>Langsung buka Kasir Warung tanpa login</span>
+        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+      </a>
+      <span>Data tersimpan lokal di peramban &bull; &copy; 2026 Kasir Warung</span>
+    </footer>
+  </main>
+
+  <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpDialogTitle">
+    <div class="dialog-head">
+      <h2 id="helpDialogTitle">Daftar Akun Demo Kasir</h2>
+      <button type="button" class="dialog-close" id="closeHelpBtn" aria-label="Tutup dialog">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
     </div>
-
-  </div>
-
-  <div class="toast-container" id="toastBox"></div>
+    <table class="demo-table">
+      <thead>
+        <tr>
+          <th scope="col">Petugas</th>
+          <th scope="col">Email</th>
+          <th scope="col">PIN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pak Warung (Pemilik)</td>
+          <td class="mono">pemilik@warung.id</td>
+          <td class="mono">888888</td>
+        </tr>
+        <tr>
+          <td>Mbak Sri (Pengelola)</td>
+          <td class="mono">pengelola@warung.id</td>
+          <td class="mono">555555</td>
+        </tr>
+        <tr>
+          <td>Budi (Kasir)</td>
+          <td class="mono">kasir@warung.id</td>
+          <td class="mono">123456</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin:0 0 0.9rem; font-size:0.8rem; color:var(--ink-muted);">
+      Kata sandi demo untuk seluruh akun di atas adalah <strong class="mono">warung2026</strong>.
+    </p>
+    <button type="button" class="btn-primary" id="dialogOkBtn" style="min-block-size:44px;">Mengerti</button>
+  </dialog>
 
   <script>
-    const DEMOS = {
-      owner: { name: "Pak Warung (Pemilik)", email: "pemilik@warung.id", pin: "888888" },
-      lead: { name: "Mbak Sri (Pengelola)", email: "pengelola@warung.id", pin: "555555" },
-      cashier: { name: "Budi (Kasir Jaga)", email: "kasir@warung.id", pin: "123456" }
-    };
+    (() => {
+      const ACCOUNTS = {
+        owner:   { label: 'Pemilik',   cashier: 'Pak Warung', email: 'pemilik@warung.id',   pass: 'warung2026', pin: '888888' },
+        lead:    { label: 'Pengelola', cashier: 'Mbak Sri',   email: 'pengelola@warung.id', pass: 'warung2026', pin: '555555' },
+        cashier: { label: 'Kasir',     cashier: 'Budi',       email: 'kasir@warung.id',     pass: 'warung2026', pin: '123456' }
+      };
 
-    let activeRole = 'owner';
-    let pinBuffer = '';
+      const KEY_META = 'kw_meta_v1';
+      let currentRole = 'owner';
+      let currentMode = 'password';
 
-    function setAccount(role) {
-      activeRole = role;
-      document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
-      if(role === 'owner') document.getElementById('pillOwner').classList.add('active');
-      if(role === 'lead') document.getElementById('pillLead').classList.add('active');
-      if(role === 'cashier') document.getElementById('pillCashier').classList.add('active');
+      // Target resolver: mendukung GitHub Pages, struktur DEMO/login/..., maupun folder sejajar
+      function resolveAppUrl() {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('/login/form_login_kasir-warung-app')) {
+          return '../../dashboard/kasir-warung-app/index.html';
+        }
+        return '../kasir-warung-app/index.html';
+      }
 
-      const acc = DEMOS[role];
-      document.getElementById('inputEmail').value = acc.email;
-      pinBuffer = acc.pin;
-      updatePin();
-      showToast(`Pilihan: ${acc.name}`);
-    }
+      const appUrl = resolveAppUrl();
+      const loginForm = document.getElementById('loginForm');
+      const brandHomeLink = document.getElementById('brandHomeLink');
+      const bypassLink = document.getElementById('bypassLink');
+      loginForm.setAttribute('action', appUrl);
+      brandHomeLink.setAttribute('href', appUrl);
+      bypassLink.setAttribute('href', appUrl);
 
-    function switchTab(t) {
-      if(t === 'email') {
-        document.getElementById('tabEmail').classList.add('active');
-        document.getElementById('tabPin').classList.remove('active');
-        document.getElementById('sectionEmail').style.display = 'block';
-        document.getElementById('sectionPin').style.display = 'none';
-        document.getElementById('rowOptions').style.display = 'flex';
-      } else {
-        document.getElementById('tabEmail').classList.remove('active');
-        document.getElementById('tabPin').classList.add('active');
-        document.getElementById('sectionEmail').style.display = 'none';
-        document.getElementById('sectionPin').style.display = 'block';
-        document.getElementById('rowOptions').style.display = 'none';
-        if(!pinBuffer) {
-          pinBuffer = DEMOS[activeRole].pin;
-          updatePin();
+      // Jam WIB langsung di header
+      const clockEl = document.getElementById('liveClock');
+      function updateWibClock() {
+        const now = new Date();
+        const wib = new Intl.DateTimeFormat('id-ID', {
+          timeZone: 'Asia/Jakarta',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }).format(now);
+        clockEl.textContent = `${wib.replace('.', ':')} WIB`;
+      }
+      updateWibClock();
+      setInterval(updateWibClock, 15000);
+
+      // Live ARIA announcer + linkError untuk :user-invalid (sesuai panduan aksesibilitas)
+      const announcer = document.createElement('div');
+      announcer.setAttribute('aria-live', 'polite');
+      announcer.className = 'visually-hidden';
+      document.body.append(announcer);
+      let announceTimer;
+      let announcedField;
+
+      const linkError = (el, shown) => {
+        const errorId = el.dataset.error;
+        if (!errorId) return;
+        const ids = (el.getAttribute('aria-describedby') || '').split(/\s+/).filter(id => id && id !== errorId);
+        if (shown) ids.push(errorId);
+        if (ids.length) el.setAttribute('aria-describedby', ids.join(' '));
+        else el.removeAttribute('aria-describedby');
+      };
+
+      const flagged = new WeakSet();
+      const announced = new WeakSet();
+      const syncAria = (el, shouldAnnounce = false) => {
+        if (!el.matches?.('input, select')) return;
+        const supportsUserInvalid = CSS.supports('selector(:user-invalid)');
+        const invalid = supportsUserInvalid
+          ? el.matches(':user-invalid')
+          : el.classList.contains('user-invalid-fallback');
+
+        if (invalid && !el.disabled) {
+          if (shouldAnnounce && !announced.has(el)) {
+            const err = document.getElementById(el.dataset.error);
+            if (err) {
+              clearTimeout(announceTimer);
+              announcer.textContent = '';
+              announcedField = el;
+              announceTimer = setTimeout(() => {
+                announcer.textContent = err.textContent.replace(/\s+/g, ' ').trim();
+              }, 450);
+            }
+            announced.add(el);
+          }
+          el.setAttribute('aria-invalid', 'true');
+          linkError(el, true);
+          flagged.add(el);
+        } else if (flagged.has(el) || el.getAttribute('aria-invalid') !== 'true') {
+          el.setAttribute('aria-invalid', 'false');
+          linkError(el, false);
+          flagged.delete(el);
+          announced.delete(el);
+          if (announcedField === el) {
+            clearTimeout(announceTimer);
+            announcer.textContent = '';
+          }
+        }
+      };
+
+      // Fallback JS bila browser lama belum mendukung :user-invalid
+      if (!CSS.supports('selector(:user-invalid)')) {
+        const dirtyState = new WeakMap();
+        const applyFallback = (input) => {
+          const ok = input.validity.valid;
+          input.classList.toggle('user-invalid-fallback', !ok);
+          input.classList.toggle('user-valid-fallback', ok);
+          syncAria(input, true);
+        };
+        loginForm.addEventListener('invalid', (e) => {
+          dirtyState.set(e.target, { interacted: true, blurred: true });
+          applyFallback(e.target);
+        }, true);
+        loginForm.addEventListener('blur', (e) => {
+          if (!e.target.checkValidity) return;
+          const s = dirtyState.get(e.target) || { interacted: false, blurred: false };
+          s.blurred = true;
+          dirtyState.set(e.target, s);
+          if (s.interacted) applyFallback(e.target);
+        }, true);
+        loginForm.addEventListener('input', (e) => {
+          if (!e.target.checkValidity) return;
+          const s = dirtyState.get(e.target) || { interacted: false, blurred: false };
+          s.interacted = true;
+          dirtyState.set(e.target, s);
+          if (s.blurred) applyFallback(e.target);
+        });
+      }
+
+      document.querySelectorAll('#loginForm input, #loginForm select').forEach(el => syncAria(el));
+      document.addEventListener('blur', (e) => syncAria(e.target, true), true);
+      document.addEventListener('input', (e) => {
+        if (e.target.hasAttribute('aria-invalid')) syncAria(e.target);
+      });
+      document.addEventListener('invalid', (e) => {
+        announced.add(e.target);
+        syncAria(e.target);
+      }, true);
+
+      // Toast ringkas di atas layar
+      let toastTimer;
+      function showToast(msg) {
+        const toast = document.getElementById('toastBanner');
+        toast.textContent = msg;
+        toast.classList.add('visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), 2300);
+      }
+
+      // Sinkron indikator meter 6-digit PIN
+      const inputPin = document.getElementById('inputPin');
+      const pinPips = document.querySelectorAll('#pinMeter .pin-pip');
+      function updatePinMeter() {
+        const clean = inputPin.value.replace(/\D/g, '').slice(0, 6);
+        if (inputPin.value !== clean) inputPin.value = clean;
+        pinPips.forEach((pip, idx) => pip.classList.toggle('active', idx < clean.length));
+      }
+      inputPin.addEventListener('input', updatePinMeter);
+
+      // Pilih akun demo 1-klik
+      const inputEmail = document.getElementById('inputEmail');
+      const inputPassword = document.getElementById('inputPassword');
+      const roleTag = document.getElementById('selectedRoleTag');
+      const staffChips = document.querySelectorAll('.staff-chip');
+
+      staffChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const role = chip.dataset.role;
+          if (!ACCOUNTS[role]) return;
+          currentRole = role;
+          staffChips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+
+          const acc = ACCOUNTS[role];
+          roleTag.textContent = acc.label;
+          inputEmail.value = acc.email;
+          inputPassword.value = acc.pass;
+          inputPin.value = acc.pin;
+          updatePinMeter();
+          [inputEmail, inputPassword, inputPin].forEach(el => {
+            el.classList.remove('user-invalid-fallback', 'user-valid-fallback');
+            syncAria(el);
+          });
+          showToast(`Shift aktif: ${acc.cashier} (${acc.label})`);
+        });
+      });
+
+      // Switch Tab Sandi / PIN dengan menonaktifkan kontrol panel tersembunyi agar validasi bersih
+      const tabPassword = document.getElementById('tabPassword');
+      const tabPin = document.getElementById('tabPin');
+      const panelPassword = document.getElementById('panelPassword');
+      const panelPin = document.getElementById('panelPin');
+
+      function setMode(mode) {
+        currentMode = mode;
+        const isPass = mode === 'password';
+
+        tabPassword.setAttribute('aria-selected', String(isPass));
+        tabPin.setAttribute('aria-selected', String(!isPass));
+
+        panelPassword.hidden = !isPass;
+        panelPin.hidden = isPass;
+
+        inputEmail.disabled = !isPass;
+        inputPassword.disabled = !isPass;
+        inputPin.disabled = isPass;
+
+        if (!isPass) {
+          updatePinMeter();
+          inputPin.focus();
+        } else {
+          inputEmail.focus();
         }
       }
-    }
 
-    function togglePass() {
-      const p = document.getElementById('inputPass');
-      const icon = document.getElementById('eyeIcon');
-      if(p.type === 'password') {
-        p.type = 'text';
-        icon.className = 'fa-regular fa-eye-slash';
-      } else {
-        p.type = 'password';
-        icon.className = 'fa-regular fa-eye';
+      tabPassword.addEventListener('click', () => setMode('password'));
+      tabPin.addEventListener('click', () => setMode('pin'));
+
+      // Toggle Tampilkan/Sembunyikan Sandi & PIN (aria-pressed)
+      function bindVisibilityToggle(btnId, inputEl, iconId, showLabel, hideLabel) {
+        const btn = document.getElementById(btnId);
+        const icon = document.getElementById(iconId);
+        btn.addEventListener('click', () => {
+          const showing = inputEl.type === 'text';
+          inputEl.type = showing ? 'password' : 'text';
+          btn.setAttribute('aria-pressed', String(!showing));
+          btn.setAttribute('aria-label', showing ? showLabel : hideLabel);
+          icon.className = showing ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+        });
       }
-    }
+      bindVisibilityToggle('togglePassBtn', inputPassword, 'eyeIcon', 'Tampilkan kata sandi', 'Sembunyikan kata sandi');
+      bindVisibilityToggle('togglePinBtn', inputPin, 'pinEyeIcon', 'Tampilkan angka PIN', 'Sembunyikan angka PIN');
 
-    function pressKey(k) {
-      if(k === 'clear') pinBuffer = '';
-      else if(k === 'back') pinBuffer = pinBuffer.slice(0, -1);
-      else if(pinBuffer.length < 6) pinBuffer += k;
-      updatePin();
-
-      if(pinBuffer.length === 6) {
-        setTimeout(loginSuccess, 200);
-      }
-    }
-
-    function updatePin() {
-      const dots = document.querySelectorAll('#pinDots .pin-dot');
-      dots.forEach((d, i) => {
-        if(i < pinBuffer.length) d.classList.add('filled');
-        else d.classList.remove('filled');
+      // Mini Keypad PIN
+      document.querySelectorAll('.mini-keypad .key-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const k = btn.dataset.key;
+          if (k === 'clear') inputPin.value = '';
+          else if (k === 'back') inputPin.value = inputPin.value.slice(0, -1);
+          else if (inputPin.value.length < 6) inputPin.value += k;
+          updatePinMeter();
+          inputPin.dispatchEvent(new Event('input', { bubbles: true }));
+        });
       });
-    }
 
-    function handleLogin(e) {
-      e.preventDefault();
-      loginSuccess();
-    }
+      // Native <dialog> Info PIN Demo
+      const helpDialog = document.getElementById('helpDialog');
+      document.getElementById('openHelpBtn').addEventListener('click', () => helpDialog.showModal());
+      document.getElementById('closeHelpBtn').addEventListener('click', () => helpDialog.close());
+      document.getElementById('dialogOkBtn').addEventListener('click', () => helpDialog.close());
 
-    function loginSuccess() {
-      const btn = document.getElementById('btnSubmit');
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Membuka Kasir...</span>`;
-      btn.disabled = true;
+      // Simpan sesi shift ke localStorage Kasir Warung & arahkan ke aplikasi utama
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!loginForm.checkValidity()) {
+          const firstBad = loginForm.querySelector(':invalid');
+          if (firstBad) firstBad.focus();
+          return;
+        }
 
-      const outlet = document.getElementById('outletSelect').value;
-      showToast(`Login berhasil! Membuka ${outlet}...`);
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span>Membuka Kasir...</span>';
 
-      setTimeout(() => {
-        window.location.href = "../kasir-warung-app/index.html";
-      }, 700);
-    }
+        const outlet = document.getElementById('outletSelect').value;
+        const remember = document.getElementById('rememberSession').checked;
+        const acc = ACCOUNTS[currentRole];
 
-    function showToast(msg) {
-      const c = document.getElementById('toastBox');
-      const t = document.createElement('div');
-      t.className = 'toast show';
-      t.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`;
-      c.appendChild(t);
-      setTimeout(() => {
-        t.classList.remove('show');
-        setTimeout(() => t.remove(), 300);
-      }, 2500);
-    }
+        try {
+          if (remember) {
+            const existingRaw = localStorage.getItem(KEY_META);
+            const existing = existingRaw ? JSON.parse(existingRaw) : {};
+            localStorage.setItem(KEY_META, JSON.stringify({
+              warungName: outlet,
+              warungAddr: existing.warungAddr || 'Warung Makan & Kedai Kopi',
+              kasirName: acc.cashier,
+              nextNoteNum: existing.nextNoteNum || 1
+            }));
+          }
+        } catch (_) {
+          // Abaikan jika storage diblokir
+        }
+
+        showToast(`Selamat bertugas, ${acc.cashier}! Membuka ${outlet}...`);
+        setTimeout(() => {
+          window.location.href = appUrl;
+        }, 450);
+      });
+    })();
   </script>
 </body>
 </html>
